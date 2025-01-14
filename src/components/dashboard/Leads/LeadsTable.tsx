@@ -1,8 +1,23 @@
 'use client'
-import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Box, IconButton, Typography, Button, TextField } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Collapse,
+  Box,
+  IconButton,
+  Typography,
+  Button,
+  TextField,
+} from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Lead, LeadsTableDataProps } from '../../../constants/types';
 
 function getStatusColor(status: string): string {
@@ -18,7 +33,7 @@ function getStatusColor(status: string): string {
   }
 }
 
-const Row: React.FC<{ row: Lead }> = ({ row }) => {
+const Row: React.FC<{ row: Lead; onDelete: (id: string) => void }> = ({ row, onDelete }) => {
   const [open, setOpen] = useState(false);
 
   const getResumeUrl = (resume: string | null): string | null => {
@@ -41,29 +56,39 @@ const Row: React.FC<{ row: Lead }> = ({ row }) => {
         <TableCell align="center">{row.Lead}</TableCell>
         <TableCell align="center">{row.BD}</TableCell>
         <TableCell align="center">{row.Dev}</TableCell>
-        <TableCell align="center" style={{
-          color: getStatusColor(row.Status),
-          borderRadius: '4px',
-          textAlign: 'center',
-          fontWeight: 'bold',
-          padding: '4px',
-          fontSize: '12px',
-          width: '100px',
-        }}>{row.Status}</TableCell>
+        <TableCell
+          align="center"
+          style={{
+            color: getStatusColor(row.Status),
+            borderRadius: '4px',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            padding: '4px',
+            fontSize: '12px',
+            width: '100px',
+          }}
+        >
+          {row.Status}
+        </TableCell>
         <TableCell align="center">{row.InterviewStage.join(', ')}</TableCell>
+        <TableCell align="center">
+          <IconButton onClick={() => onDelete(row.ID)} color="error">
+            <DeleteIcon />
+          </IconButton>
+        </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 3 }}>
               {row.resume && (
                 <Box mt={2}>
                   <Typography variant="h6" gutterBottom component="div">Resume:</Typography>
-                  <Button 
-                    color="primary" 
+                  <Button
+                    color="primary"
                     href={getResumeUrl(row.resume) || '#'}
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     disabled={!getResumeUrl(row.resume)}
                   >
                     View Resume
@@ -82,8 +107,20 @@ const Row: React.FC<{ row: Lead }> = ({ row }) => {
 
 const LeadsTableData: React.FC<LeadsTableDataProps> = ({ rows }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [data, setData] = useState<Lead[]>([]);
 
-  const filteredRows = rows.filter((row) =>
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('leads') || '[]');
+    setData(storedData);
+  }, []);
+
+  const handleDelete = (id: string) => {
+    const updatedData = data.filter((row) => row.ID !== id);
+    setData(updatedData);
+    localStorage.setItem('leads', JSON.stringify(updatedData));
+  };
+
+  const filteredRows = data.filter((row) =>
     Object.values(row).some((value) =>
       value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -92,10 +129,8 @@ const LeadsTableData: React.FC<LeadsTableDataProps> = ({ rows }) => {
   return (
     <Box>
       <TextField
-
         label="Search"
         variant="outlined"
-
         margin="normal"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -112,11 +147,12 @@ const LeadsTableData: React.FC<LeadsTableDataProps> = ({ rows }) => {
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Dev</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Status</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Interview Stage</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredRows.map((row) => (
-              <Row key={row.ID} row={row} />
+              <Row key={row.ID} row={row} onDelete={handleDelete} />
             ))}
           </TableBody>
         </Table>

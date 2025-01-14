@@ -65,6 +65,7 @@ const AddLead: React.FC<AddLeadProps> = ({ onAddLead, onCancel }) => {
     });
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      console.log(newErrors)
     } else {
       onAddLead(formData);
     }

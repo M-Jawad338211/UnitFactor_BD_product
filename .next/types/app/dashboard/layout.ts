@@ -1,4 +1,4 @@
-// File: /home/hp/Desktop/unitfactor/product/src/app/dashboard/layout.tsx
+// File: E:\Unit Factor product\UnitFactor_BD_product\src\app\dashboard\layout.tsx
 import * as entry from '../../../../src/app/dashboard/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
