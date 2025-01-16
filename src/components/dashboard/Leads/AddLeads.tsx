@@ -1,27 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, Box, Typography, Paper, Grid, Autocomplete, Chip } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { AddLeadProps, Lead } from '../../../constants/types';
 import { height } from '@mui/system';
+import { string } from 'zod';
 
-const devOptions = [
-  { name: 'John Doe', designation: 'SE' },
-  { name: 'Jane Smith', designation: 'FE' },
-  { name: 'Mike Johnson', designation: 'BE' },
-  { name: 'Emily Brown', designation: 'FS' },
-  { name: 'Chris Wilson', designation: 'SE' },
-  { name: 'Anna Lee', designation: 'FE' },
-  { name: 'Tom White', designation: 'BE' },
-  { name: 'Sarah Clark', designation: 'FS' },
-];
+
+
+
+
 
 const statusOptions = ['In Progress', 'Completed', 'Rejected'];
 
 const interviewStages = ['HR', 'First Technical', 'Second Technical', 'Hiring Manager', 'Cultural Fit'];
 
 const AddLead: React.FC<AddLeadProps> = ({ onAddLead, onCancel }) => {
+  const [devOptions, setDevOptions] = useState<string[]>([]);
   const [formData, setFormData] = useState<Omit<Lead, 'ID'>>({
     Job_Title: '',
     Lead: '',
@@ -34,7 +30,20 @@ const AddLead: React.FC<AddLeadProps> = ({ onAddLead, onCancel }) => {
     Interviewer: [],
   });
   const [errors, setErrors] = useState<Partial<Record<keyof Omit<Lead, 'ID'>, string>>>({});
-
+  useEffect(() => {
+    const devData = window.localStorage.getItem('employees');
+    if (devData) {
+      try {
+        const parsedData = JSON.parse(devData); // Parse JSON data
+        const employeeNames = parsedData.map((employee: { Name: string }) => employee.Name); // Extract Names
+        setDevOptions(employeeNames); // Store names in state
+        console.log(employeeNames)
+      } catch (error) {
+        console.error('Error parsing employee data:', error);
+      }
+    }
+   
+  }, []);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
@@ -122,11 +131,10 @@ const AddLead: React.FC<AddLeadProps> = ({ onAddLead, onCancel }) => {
               <Autocomplete
                 fullWidth
                 options={devOptions}
-                getOptionLabel={(option) => `${option.name} (${option.designation})`}
                 renderInput={(params) => <TextField {...params} label="Dev" />}
-                value={formData.Dev ? devOptions.find((dev) => dev.name === formData.Dev) : null}
+                value={formData.Dev}
                 onChange={(event, newValue) => {
-                  setFormData({ ...formData, Dev: newValue ? newValue.name : null });
+                  setFormData({ ...formData, Dev: newValue || '' });
                   setErrors({ ...errors, Dev: '' });
                 }}
               />

@@ -1,0 +1,75 @@
+[
+    {
+      "ID": 1,
+      "Name": "John Doe",
+      "Job_Title": "Front End Developer",
+      "Department": "Development",
+      "Email": "john.doe@example.com",
+      "Phone": "+1234567890",
+      "Profile_Picture": "https://example.com/images/john_doe.jpg"
+    },
+    {
+      "ID": 2,
+      "Name": "Jane Smith",
+      "Job_Title": "Back End Developer",
+      "Department": "Development",
+      "Email": "jane.smith@example.com",
+      "Phone": "+0987654321",
+      "Profile_Picture": "https://example.com/images/jane_smith.jpg"
+    },
+    {
+      "ID": 3,
+      "Name": "Alice Johnson",
+      "Job_Title": "Full Stack Developer",
+      "Department": "Development",
+      "Email": "alice.johnson@example.com",
+      "Phone": "+1122334455",
+      "Profile_Picture": "https://example.com/images/alice_johnson.jpg"
+    },
+    {
+      "ID": 4,
+      "Name": "Bob Brown",
+      "Job_Title": "UI/UX Designer",
+      "Department": "Design",
+      "Email": "bob.brown@example.com",
+      "Phone": "+2233445566",
+      "Profile_Picture": "https://example.com/images/bob_brown.jpg"
+    },
+    {
+      "ID": 5,
+      "Name": "Charlie Davis",
+      "Job_Title": "Front End Developer",
+      "Department": "Development",
+      "Email": "charlie.davis@example.com",
+      "Phone": "+3344556677",
+      "Profile_Picture": "https://example.com/images/charlie_davis.jpg"
+    },
+    {
+      "ID": 6,
+      "Name": "Eve Miller",
+      "Job_Title": "Back End Developer",
+      "Department": "Development",
+      "Email": "eve.miller@example.com",
+      "Phone": "+4455667788",
+      "Profile_Picture": "https://example.com/images/eve_miller.jpg"
+    },
+    {
+      "ID": 7,
+      "Name": "Frank Wilson",
+      "Job_Title": "Full Stack Developer",
+      "Department": "Development",
+      "Email": "frank.wilson@example.com",
+      "Phone": "+5566778899",
+      "Profile_Picture": "https://example.com/images/frank_wilson.jpg"
+    },
+    {
+      "ID": 8,
+      "Name": "Grace Lee",
+      "Job_Title": "UI/UX Designer",
+      "Department": "Design",
+      "Email": "grace.lee@example.com",
+      "Phone": "+6677889900",
+      "Profile_Picture": "https://example.com/images/grace_lee.jpg"
+    }
+  ]
+  
